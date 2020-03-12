@@ -423,7 +423,7 @@ public class AdvancementDisplay {
 	/**
 	 * Changes the Description
 	 * 
-	 * @param title New title {@link JSONMessage}
+	 * @param description New description {@link JSONMessage}
 	 */
 	public void setDescription(JSONMessage description) {
 		this.description = description;
@@ -432,7 +432,7 @@ public class AdvancementDisplay {
 	/**
 	 * Changes the Description
 	 * 
-	 * @param title New Title {@link String}
+	 * @param description New description {@link String}
 	 */
 	public void setDescription(String description) {
 		this.description = new JSONMessage("{\"text\":\"" + description.replaceAll("\"", "\\\"") + "\"}");
