@@ -416,7 +416,7 @@ public class AdvancementDisplay {
 	 * @param title New Title {@link String}
 	 */
 	public void setTitle(String title) {
-		if(title.contains("�")) title += "�a";
+		if(title.contains("§")) title += "§a";
 		this.title = new JSONMessage("{\"text\":\"" + title.replaceAll("\"", "\\\"") + "\"}");
 	}
 	
