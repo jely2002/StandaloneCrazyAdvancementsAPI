@@ -6,7 +6,7 @@
     <artifactId>craftbukkit</artifactId>
     <packaging>jar</packaging>
     <version>1.15.2-R0.1-SNAPSHOT</version>
-    <name>CraftBukkit</name>
-    <url>http://spigotmc.org/wiki/Buildtools</url>
-    <description>Bukkit source code for NMS</description>
+    <name>craftbukkit</name>
+    <url>http://dovetail.com/downloads/misc/index.html</url>
+    <description>Apache Log4j Appender for z/OS Logstreams, files, etc.</description>
 </project>

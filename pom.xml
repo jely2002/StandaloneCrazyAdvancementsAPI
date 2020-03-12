@@ -37,12 +37,12 @@
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>local-repo</id>
+            <url>file:\\${project.basedir}\lib</url>
         </repository>
         <repository>
-            <id>local-repo</id>
-            <url>file:///${project.basedir}/lib</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -57,7 +57,7 @@
                     <artifactId>craftbukkit</artifactId>
                     <version>1.15.2-R0.1-SNAPSHOT</version>
                     <packaging>jar</packaging>
-                    <file>${project.basedir}/lib/org/bukkit/craftbukkit/1.15.2-R0.1-SNAPSHOT/craftbukkit-1.15.2-R0.1-SNAPSHOT.jar</file>
+                    <file>${project.basedir}\lib\org\bukkit\craftbukkit\1.15.2-R0.1-SNAPSHOT\craftbukkit-1.15.2-R0.1-SNAPSHOT.jar</file>
                     <generatePom>false</generatePom>
                     <pomFile>${project.basedir}/lib/org/bukkit/craftbukkit/1.15.2-R0.1-SNAPSHOT/pom.xml</pomFile>
                 </configuration>
