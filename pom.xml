@@ -38,7 +38,7 @@
     <repositories>
         <repository>
             <id>local-repo</id>
-            <url>file:\\${project.basedir}\lib</url>
+            <url>file:${file.separator}${file.separator}${project.basedir}${file.separator}lib</url>
         </repository>
         <repository>
             <id>spigot-repo</id>
@@ -57,9 +57,9 @@
                     <artifactId>craftbukkit</artifactId>
                     <version>1.15.2-R0.1-SNAPSHOT</version>
                     <packaging>jar</packaging>
-                    <file>${project.basedir}\lib\org\bukkit\craftbukkit\1.15.2-R0.1-SNAPSHOT\craftbukkit-1.15.2-R0.1-SNAPSHOT.jar</file>
+                    <file>${project.basedir}${file.separator}lib${file.separator}org${file.separator}bukkit${file.separator}craftbukkit${file.separator}1.15.2-R0.1-SNAPSHOT${file.separator}craftbukkit-1.15.2-R0.1-SNAPSHOT.jar</file>
                     <generatePom>false</generatePom>
-                    <pomFile>${project.basedir}/lib/org/bukkit/craftbukkit/1.15.2-R0.1-SNAPSHOT/pom.xml</pomFile>
+                    <pomFile>${project.basedir}${file.separator}lib${file.separator}org${file.separator}bukkit${file.separator}craftbukkit${file.separator}1.15.2-R0.1-SNAPSHOT${file.separator}pom.xml</pomFile>
                 </configuration>
                 <executions>
                     <execution>
