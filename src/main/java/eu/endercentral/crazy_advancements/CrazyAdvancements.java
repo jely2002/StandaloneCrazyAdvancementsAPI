@@ -154,7 +154,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * Sets the active tab
 	 * 
 	 * @param player The player whose Tab should be changed
-	 * @param rootAdvancementThe name of the tab to change to
+	 * @param rootAdvancement The name of the tab to change to
 	 */
 	public static void setActiveTab(Player player, NameKey rootAdvancement) {
 		setActiveTab(player, rootAdvancement, true);
