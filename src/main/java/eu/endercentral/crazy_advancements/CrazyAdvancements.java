@@ -31,13 +31,14 @@ import eu.endercentral.crazy_advancements.manager.AdvancementManager;
 import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutSelectAdvancementTab;
 
-public class CrazyAdvancements extends JavaPlugin implements Listener {
+public class CrazyAdvancements  implements Listener {
 	
 	private static CrazyAdvancements instance;
 	
 	private AdvancementManager fileAdvancementManager;
 	private static AdvancementPacketReceiver packetReciever;
-	
+
+	private static JavaPlugin plugin;
 	private static ArrayList<Player> initiatedPlayers = new ArrayList<>();
 	private static ArrayList<AdvancementManager> managers = new ArrayList<>();
 	private static boolean announceAdvancementMessages = true;
@@ -45,27 +46,23 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	
 	
 	private static boolean useUUID;
-	
-	
-	@Override
-	public void onLoad() {
+
+	public void initialize(JavaPlugin pl) {
+		plugin = pl;
+
 		instance = this;
-		fileAdvancementManager = AdvancementManager.getNewAdvancementManager();
-	}
-	
-	@Override
-	public void onEnable() {
+		fileAdvancementManager = AdvancementManager.getNewAdvancementManager(plugin);
+
 		packetReciever = new AdvancementPacketReceiver();
-		
+
 		//Registering Players
-		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
-			
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			@Override
 			public void run() {
-				String path = CrazyAdvancements.getInstance().getDataFolder().getAbsolutePath() + File.separator + "advancements" + File.separator + "main" + File.separator;
+				String path = plugin.getDataFolder().getAbsolutePath() + File.separator + "advancements" + File.separator + "main" + File.separator;
 				File saveLocation = new File(path);
 				loadAdvancements(saveLocation);
-				
+
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					fileAdvancementManager.addPlayer(player);
 					packetReciever.initPlayer(player);
@@ -74,15 +71,23 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 			}
 		}, 5);
 		//Registering Events
-		Bukkit.getPluginManager().registerEvents(this, this);
-		
-		reloadConfig();
-		FileConfiguration config = getConfig();
-		config.addDefault("useUUID", true);
-		saveConfig();
-		useUUID = config.getBoolean("useUUID");
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+		useUUID = true;
 	}
-	
+
+	public void disable() {
+		for(AdvancementManager manager : managers) {
+			for(Advancement advancement : manager.getAdvancements()) {
+				manager.removeAdvancement(advancement);
+			}
+		}
+		PacketPlayOutAdvancements packet = new PacketPlayOutAdvancements(true, new ArrayList<>(), new HashSet<>(), new HashMap<>());
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			packetReciever.close(p, packetReciever.getHandlers().get(p.getName()));
+			((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+		}
+	}
+
 	private void loadAdvancements(File location) {
 		location.mkdirs();
 		File[] files = location.listFiles();
@@ -107,28 +112,15 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 		}
 	}
 	
-	@Override
-	public void onDisable() {
-		for(AdvancementManager manager : managers) {
-			for(Advancement advancement : manager.getAdvancements()) {
-				manager.removeAdvancement(advancement);
-			}
-		}
-		PacketPlayOutAdvancements packet = new PacketPlayOutAdvancements(true, new ArrayList<>(), new HashSet<>(), new HashMap<>());
-		for(Player p : Bukkit.getOnlinePlayers()) {
-			packetReciever.close(p, packetReciever.getHandlers().get(p.getName()));
-			((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-		}
-	}
-	
 	/**
 	 * Creates a new instance of an advancement manager
-	 * 
+	 *
+	 * @param pl The instance of the parent plugin running this API
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	public static AdvancementManager getNewAdvancementManager(Player... players) {
-		return AdvancementManager.getNewAdvancementManager(players);
+	public static AdvancementManager getNewAdvancementManager(JavaPlugin pl, Player... players) {
+		return AdvancementManager.getNewAdvancementManager(pl, players);
 	}
 	
 	/**
@@ -181,7 +173,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
-		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			
 			@Override
 			public void run() {
@@ -201,10 +193,6 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	@Warning(reason = "Unsafe")
 	public static ArrayList<Player> getInitiatedPlayers() {
 		return initiatedPlayers;
-	}
-	
-	public static CrazyAdvancements getInstance() {
-		return instance;
 	}
 	
 	/**
@@ -231,9 +219,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	public static boolean isUseUUID() {
 		return useUUID;
 	}
-	
-	private final String noPermission = "�cI'm sorry but you do not have permission to perform this command. Please contact the server administrator if you believe that this is in error.";
-	private final String commandIncompatible = "�cThis Command is incompatible with your Arguments!";
+
 	private final List<String> selectors = Arrays.asList("@a", "@p", "@s", "@r");
 	
 	private boolean startsWithSelector(String arg) {
@@ -242,232 +228,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 		}
 		return false;
 	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		
-		if(cmd.getName().equalsIgnoreCase("showtoast")) {
-			if(sender.hasPermission("crazyadvancements.command.*") || sender.hasPermission("crazyadvancements.command.showtoast")) {
-				if(args.length >= 3) {
-					
-					
-					try {
-						if(startsWithSelector(args[0])) {
-							String argsString = args[1];
-							for(int i = 2; i < args.length; i++) {
-								argsString += " " + args[i];
-							}
-							boolean opBefore = sender.isOp();
-							sender.setOp(true);
-							Bukkit.dispatchCommand(sender, "minecraft:execute as " + args[0] + " at @s run " + label + " self " + argsString);
-							sender.setOp(opBefore);
-							return true;
-						}
-						Player player = args[0].equalsIgnoreCase("self") ? (sender instanceof Player) ? (Player) sender : (sender instanceof ProxiedNativeCommandSender) ? (Player) ((ProxiedNativeCommandSender)sender).getCallee() : null : Bukkit.getPlayer(args[0]);
-						
-						if(player != null && player.isOnline()) {
-							Material mat = getMaterial(args[1]);
-							
-							if(mat != null && mat.isItem()) {
-								String message = args[2];
-								if(args.length > 3) {
-									for(int i = 3; i < args.length; i++) {
-										message += " " + args[i];
-									}
-								}
-								
-								AdvancementDisplay display = new AdvancementDisplay(mat, message, "", AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS);
-								Advancement advancement = new Advancement(null, new NameKey("toast", "message"), display);
-								advancement.displayToast(player);
-								
-								sender.sendMessage("�aSuccessfully displayed Toast to �b" + player.getName() + "�a!");
-							} else {
-								sender.sendMessage("�c'" + args[1] + "' isn't a valid Item Material");
-							}
-							
-						} else {
-							sender.sendMessage("�cCan't find Player '�e" + args[0] + "�c'");
-						}
-					} catch(Exception ex) {
-						sender.sendMessage(commandIncompatible);
-					}
-					
-					
-				} else {
-					sender.sendMessage("�cUsage: �r" + cmd.getUsage());
-				}
-			} else {
-				sender.sendMessage(noPermission);
-			}
-			return true;
-		}
-		
-		if(cmd.getName().equalsIgnoreCase("cagrant") || cmd.getName().equalsIgnoreCase("carevoke")) {
-			boolean grant = cmd.getName().equalsIgnoreCase("cagrant");
-			if(sender.hasPermission("crazyadvancements.command.*") || sender.hasPermission("crazyadvancements.command.grantrevoke")) {
-				if(args.length >= 3) {
-					
-					try {
-						if(startsWithSelector(args[0])) {
-							String argsString = args[1];
-							for(int i = 2; i < args.length; i++) {
-								argsString += " " + args[i];
-							}
-							boolean opBefore = sender.isOp();
-							sender.setOp(true);
-							Bukkit.dispatchCommand(sender, "minecraft:execute as " + args[0] + " at @s run " + label + " self " + argsString);
-							sender.setOp(opBefore);
-							return true;
-						}
-						Player player = args[0].equalsIgnoreCase("self") ? (sender instanceof Player) ? (Player) sender : (sender instanceof ProxiedNativeCommandSender) ? (Player) ((ProxiedNativeCommandSender)sender).getCallee() : null : Bukkit.getPlayer(args[0]);
-						
-						if(player != null && player.isOnline()) {
-							AdvancementManager manager = args[1].equalsIgnoreCase("file") ? fileAdvancementManager : AdvancementManager.getAccessibleManager(args[1]);
-							
-							if(manager != null) {
-								
-								if(manager.getPlayers().contains(player)) {
-									Advancement advancement = manager.getAdvancement(new NameKey(args[2]));
-									
-									if(advancement != null) {
-										
-										if(args.length >= 4) {
-											
-											String[] convertedCriteria = Arrays.copyOfRange(args, 3, args.length);
-											
-											if(grant) {
-												if(!advancement.getProgress(player).isDone()) manager.grantCriteria(player, advancement, convertedCriteria);
-											} else {
-												manager.revokeCriteria(player, advancement, convertedCriteria);
-											}
-											
-											String criteriaString = "�c" + convertedCriteria[0];
-											if(convertedCriteria.length > 1) {
-												for(String criteria : Arrays.copyOfRange(convertedCriteria, 1, convertedCriteria.length - 1)) {
-													criteriaString += "�a, �c" + criteria;
-												}
-												criteriaString += " �aand �c" + convertedCriteria[convertedCriteria.length - 1];
-											}
-											
-											sender.sendMessage("�aSuccessfully " + (grant ? "granted" : "revoked") + " Criteria " + criteriaString + " �afor '�e" + advancement.getName() + "�a' " + (grant ? "to" : "from") + " �b" + player.getName());
-											
-										} else {
-											if(grant) {
-												if(!advancement.getProgress(player).isDone()) manager.grantAdvancement(player, advancement);
-											} else {
-												manager.revokeAdvancement(player, advancement);
-											}
-											
-											sender.sendMessage("�aSuccessfully " + (grant ? "granted" : "revoked") + " Advancement '�e" + advancement.getName() + "�a' " + (grant ? "to" : "from") + " �b" + player.getName());
-										}
-										
-									} else {
-										sender.sendMessage("�cAdvancement with Name '�e" + args[2] + "�c' does not exist in '�e" + args[1] + "�c'");
-									}
-									
-								} else {
-									sender.sendMessage("�c'�e" + args[1] + "�c' does not contain Player '�e" + args[0] + "�c'");
-								}
-							} else {
-								sender.sendMessage("�cManager with Name '�e" + args[1] + "�c' does not exist");
-							}
-						} else {
-							sender.sendMessage("�cCan't find Player '�e" + args[0] + "�c'");
-						}
-						
-					} catch(Exception ex) {
-						sender.sendMessage(commandIncompatible);
-					}
-					
-				} else {
-					sender.sendMessage("�cUsage: �r" + cmd.getUsage());
-				}
-			} else {
-				sender.sendMessage(noPermission);
-			}
-			return true;
-		}
-		
-		return true;
-	}
-	
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		ArrayList<String> tab = new ArrayList<>();
-		
-		if(cmd.getName().equalsIgnoreCase("showtoast")) {
-			
-			if(args.length == 1) {
-				for(String selector : selectors) {
-					if(selector.toLowerCase().startsWith(args[0].toLowerCase())) {
-						tab.add(selector);
-					}
-				}
-				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(player.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-						tab.add(player.getName());
-					}
-				}
-			} else if(args.length == 2) {
-				for(Material mat : Material.values()) {
-					if(mat.isItem() && mat.name().toLowerCase().startsWith(args[1].toLowerCase())) {
-						tab.add(mat.name().toLowerCase());
-					}
-				}
-			}
-			
-		}
-		
-		if(cmd.getName().equalsIgnoreCase("cagrant") || cmd.getName().equalsIgnoreCase("carevoke")) {
-			
-			if(args.length == 1) {
-				for(String selector : selectors) {
-					if(selector.toLowerCase().startsWith(args[0].toLowerCase())) {
-						tab.add(selector);
-					}
-				}
-				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(player.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-						tab.add(player.getName());
-					}
-				}
-			} else if(args.length == 2) {
-				if("file".startsWith(args[1])) {
-					tab.add("file");
-				}
-				for(AdvancementManager manager : AdvancementManager.getAccessibleManagers()) {
-					if(manager.getName().startsWith(args[1].toLowerCase())) {
-						tab.add(manager.getName());
-					}
-				}
-			} else if(args.length == 3) {
-				AdvancementManager manager = AdvancementManager.getAccessibleManager(args[1]);
-				if(manager != null) {
-					for(Advancement advancement : manager.getAdvancements()) {
-						if(advancement.getName().toString().startsWith(args[2].toLowerCase()) || advancement.getName().getKey().startsWith(args[2].toLowerCase())) {
-							tab.add(advancement.getName().toString());
-						}
-					}
-				}
-			} else if(args.length >= 4) {
-				AdvancementManager manager = AdvancementManager.getAccessibleManager(args[1]);
-				if(manager != null) {
-					Advancement advancement = manager.getAdvancement(new NameKey(args[2]));
-					if(advancement != null) {
-						for(String criterion : advancement.getSavedCriteria().keySet()) {
-							if(criterion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-								tab.add(criterion);
-							}
-						}
-					}
-				}
-			}
-			
-		}
-		
-		return tab;
-	}
-	
+
 	private Material getMaterial(String input) {
 		for(Material mat : Material.values()) {
 			if(mat.name().equalsIgnoreCase(input)) {
@@ -476,7 +237,4 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 		}
 		return null;
 	}
-	
-	
-	
 }
