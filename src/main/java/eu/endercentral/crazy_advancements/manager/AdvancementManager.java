@@ -50,6 +50,7 @@ import net.minecraft.server.v1_15_R1.ItemStack;
 import net.minecraft.server.v1_15_R1.MinecraftKey;
 import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdvancementManager {
 	
@@ -82,6 +83,8 @@ public class AdvancementManager {
 	private static float getSmallestX(NameKey key) {
 		return smallestX.containsKey(key) ? smallestX.get(key) : 0;
 	}
+
+	private static JavaPlugin plugin;
 	
 	private boolean announceAdvancementMessages = true;
 	private ArrayList<Player> players;
@@ -93,11 +96,13 @@ public class AdvancementManager {
 	
 	/**
 	 * Creates a new instance of an advancement manager
-	 * 
+	 *
+	 * @param pl Pass the plugin instance of the plugin running this API
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	public static AdvancementManager getNewAdvancementManager(Player... players) {
+	public static AdvancementManager getNewAdvancementManager(JavaPlugin pl, Player... players) {
+		plugin = pl;
 		AdvancementManager manager = new AdvancementManager();
 		for(Player player : players) {
 			manager.addPlayer(player);
@@ -419,7 +424,7 @@ public class AdvancementManager {
 			NameKey rootAdvancement = CrazyAdvancements.getActiveTab(player);
 			CrazyAdvancements.clearActiveTab(player);
 			addPlayer(player);
-			Bukkit.getScheduler().runTaskLater(CrazyAdvancements.getInstance(), new Runnable() {
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				
 				@Override
 				public void run() {
@@ -440,7 +445,7 @@ public class AdvancementManager {
 			NameKey rootAdvancement = CrazyAdvancements.getActiveTab(player);
 			CrazyAdvancements.clearActiveTab(player);
 			addPlayer(player, tab);
-			Bukkit.getScheduler().runTaskLater(CrazyAdvancements.getInstance(), new Runnable() {
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				
 				@Override
 				public void run() {
@@ -1228,7 +1233,7 @@ public class AdvancementManager {
 	}
 	
 	private String getSaveDirectory(String namespace) {
-		return CrazyAdvancements.getInstance().getDataFolder().getAbsolutePath() + File.separator + "saved_data" + File.separator + namespace + File.separator;
+		return plugin.getDataFolder().getAbsolutePath() + File.separator + "saved_data" + File.separator + namespace + File.separator;
 	}
 	
 	private File getSaveFile(Player player, String namespace) {
