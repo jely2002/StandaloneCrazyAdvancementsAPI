@@ -1,41 +1,20 @@
 package eu.endercentral.crazy_advancements;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.annotations.SerializedName;
+import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
+import net.minecraft.server.v1_15_R1.*;
+import net.minecraft.server.v1_15_R1.IChatBaseComponent.ChatSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Warning;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.annotations.SerializedName;
-
-import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
-import net.minecraft.server.v1_15_R1.AdvancementProgress;
-import net.minecraft.server.v1_15_R1.AdvancementRewards;
-import net.minecraft.server.v1_15_R1.ChatModifier;
-import net.minecraft.server.v1_15_R1.Criterion;
-import net.minecraft.server.v1_15_R1.CriterionInstance;
-import net.minecraft.server.v1_15_R1.EnumChatFormat;
-import net.minecraft.server.v1_15_R1.IChatBaseComponent;
-import net.minecraft.server.v1_15_R1.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_15_R1.ItemStack;
-import net.minecraft.server.v1_15_R1.MinecraftKey;
-import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
-import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class Advancement {
 	
