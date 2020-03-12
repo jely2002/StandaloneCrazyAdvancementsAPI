@@ -102,6 +102,22 @@
                             <generatePom>false</generatePom>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>org.bukkit.craftbukkit</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>org.bukkit</groupId>
+                            <artifactId>craftbukkit</artifactId>
+                            <version>1.15.2-R0.1-SNAPSHOT</version>
+                            <packaging>jar</packaging>
+                            <file>${project.basedir}/lib/craftbukkit-1.15.2.jar</file>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>false</generatePom>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
