@@ -40,10 +40,37 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>local-repo</id>
+            <url>file:///${project.basedir}/lib</url>
+        </repository>
     </repositories>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                    <version>1.15.2-R0.1-SNAPSHOT</version>
+                    <packaging>jar</packaging>
+                    <file>${project.basedir}/lib/org/bukkit/craftbukkit/1.15.2-R0.1-SNAPSHOT/craftbukkit-1.15.2-R0.1-SNAPSHOT.jar</file>
+                    <generatePom>false</generatePom>
+                    <pomFile>${project.basedir}/lib/org/bukkit/craftbukkit/1.15.2-R0.1-SNAPSHOT/pom.xml</pomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install-jar-lib</id>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -77,45 +104,6 @@
                                     </excludes>
                                 </filter>
                             </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.5.2</version>
-                <executions>
-                    <execution>
-                        <id>org.bukkit.craftbukkit</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>org.bukkit</groupId>
-                            <artifactId>craftbukkit</artifactId>
-                            <version>1.15.2-R0.1-SNAPSHOT</version>
-                            <packaging>jar</packaging>
-                            <file>${project.basedir}/lib/craftbukkit-1.15.2.jar</file>
-                            <createChecksum>true</createChecksum>
-                            <generatePom>false</generatePom>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>org.bukkit.craftbukkit</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>org.bukkit</groupId>
-                            <artifactId>craftbukkit</artifactId>
-                            <version>1.15.2-R0.1-SNAPSHOT</version>
-                            <packaging>jar</packaging>
-                            <file>${project.basedir}/lib/craftbukkit-1.15.2.jar</file>
-                            <createChecksum>true</createChecksum>
-                            <generatePom>false</generatePom>
                         </configuration>
                     </execution>
                 </executions>
