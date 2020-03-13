@@ -92,7 +92,7 @@ public class AdvancementManager {
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	public static AdvancementManager getNewAdvancementManager(JavaPlugin pl, Player... players) {
+	public AdvancementManager getNewAdvancementManager(JavaPlugin pl, Player... players) {
 		plugin = pl;
 		AdvancementManager manager = new AdvancementManager();
 		for(Player player : players) {
