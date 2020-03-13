@@ -49,7 +49,6 @@ public class CrazyAdvancements  implements Listener {
 	 */
 	public CrazyAdvancements(JavaPlugin pl) {
 		plugin = pl;
-
 		fileAdvancementManager = AdvancementManager.getNewAdvancementManager(plugin);
 
 		packetReciever = new AdvancementPacketReceiver();
