@@ -4,7 +4,7 @@
 
     <groupId>eu.endercentral</groupId>
     <artifactId>crazy_advancements</artifactId>
-    <version>1.13.6</version>
+    <version>1.13.7</version>
     <packaging>jar</packaging>
 
     <name>CrazyAdvancementsAPI</name>
@@ -48,29 +48,6 @@
 
     <build>
         <plugins>
-            <!--<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>3.0.0-M1</version>
-                <configuration>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>craftbukkit</artifactId>
-                    <version>1.15.2-R0.1-SNAPSHOT</version>
-                    <packaging>jar</packaging>
-                    <file>${project.basedir}${file.separator}lib${file.separator}org${file.separator}bukkit${file.separator}craftbukkit${file.separator}1.15.2-R0.1-SNAPSHOT${file.separator}craftbukkit-1.15.2-R0.1-SNAPSHOT.jar</file>
-                    <generatePom>false</generatePom>
-                    <pomFile>${project.basedir}${file.separator}lib${file.separator}org${file.separator}bukkit${file.separator}craftbukkit${file.separator}1.15.2-R0.1-SNAPSHOT${file.separator}pom.xml</pomFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install-jar-lib</id>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>verify</phase>
-                    </execution>
-                </executions>
-            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
