@@ -12,7 +12,7 @@ The latest version can be found on top of this page, please use this in the <ver
 <dependency>
     <groupId>com.github.jely2002</groupId>
     <artifactId>StandaloneCrazyAdvancementsAPI</artifactId>
-    <version>1.13.6</version>
+    <version>1.13.7</version>
 </dependency>
 ```
 **Add the repository to your pom.xml**
@@ -24,7 +24,7 @@ The latest version can be found on top of this page, please use this in the <ver
 ```
 
 ## How to initialize the API
-In order to intialize/disable the 'StandaloneCrazyAdvancementsAPI' you need to include the following code in your `onEnable()` and `onDisable()` methods. The rest of the process is almost the same as the original API, with the only difference being that `getNewAdvancementManager()` now also takes an instance of your plugin's main class.
+In order to initialize/disable the 'StandaloneCrazyAdvancementsAPI' you need to include the following code in your `onEnable()` and `onDisable()` methods. The rest of the process is almost the same as the original API.
 
 **Example `onEnable()` & `onDisable()` methods:**
 ```java
@@ -32,8 +32,7 @@ private CrazyAdvancements advancementsAPI;
 
 @Override
 public void onEnable() {
-  this.advancementsAPI = new CrazyAdvancements();
-  advancementsAPI.initialize(this);
+  this.advancementsAPI = new CrazyAdvancements(this);
 }
 
 @Override

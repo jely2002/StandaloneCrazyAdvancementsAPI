@@ -5,7 +5,7 @@ import net.minecraft.server.v1_15_R1.MinecraftKey;
 public class NameKey {
 	
 	private String namespace = "minecraft";
-	private String key = "???";
+	private String key;
 	
 	private transient MinecraftKey mcKey;
 	
@@ -36,7 +36,7 @@ public class NameKey {
 	/**
 	 * Generates a {@link NameKey}
 	 * 
-	 * @param from
+	 * @param from The {@link MinecraftKey} to instantiate this class from
 	 */
 	public NameKey(MinecraftKey from) {
 		this.namespace = from.getNamespace().toLowerCase();

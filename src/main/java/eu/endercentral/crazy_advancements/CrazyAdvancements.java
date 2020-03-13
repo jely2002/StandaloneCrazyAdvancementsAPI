@@ -33,8 +33,6 @@ import net.minecraft.server.v1_15_R1.PacketPlayOutSelectAdvancementTab;
 
 public class CrazyAdvancements  implements Listener {
 	
-	private static CrazyAdvancements instance;
-	
 	private AdvancementManager fileAdvancementManager;
 	private static AdvancementPacketReceiver packetReciever;
 
@@ -43,14 +41,14 @@ public class CrazyAdvancements  implements Listener {
 	private static ArrayList<AdvancementManager> managers = new ArrayList<>();
 	private static boolean announceAdvancementMessages = true;
 	private static HashMap<String, NameKey> openedTabs = new HashMap<>();
-	
-	
-	private static boolean useUUID;
 
-	public void initialize(JavaPlugin pl) {
+	/**
+	 * Create new instance of CrazyAdvancements
+	 *
+	 * @param pl The instance of the JavaPlugin using this API
+	 */
+	public CrazyAdvancements(JavaPlugin pl) {
 		plugin = pl;
-
-		instance = this;
 		fileAdvancementManager = AdvancementManager.getNewAdvancementManager(plugin);
 
 		packetReciever = new AdvancementPacketReceiver();
@@ -72,9 +70,11 @@ public class CrazyAdvancements  implements Listener {
 		}, 5);
 		//Registering Events
 		Bukkit.getPluginManager().registerEvents(this, plugin);
-		useUUID = true;
 	}
 
+	/**
+	 * Disables the API
+	 */
 	public void disable() {
 		for(AdvancementManager manager : managers) {
 			for(Advancement advancement : manager.getAdvancements()) {
@@ -115,12 +115,11 @@ public class CrazyAdvancements  implements Listener {
 	/**
 	 * Creates a new instance of an advancement manager
 	 *
-	 * @param pl The instance of the parent plugin running this API
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	public static AdvancementManager getNewAdvancementManager(JavaPlugin pl, Player... players) {
-		return AdvancementManager.getNewAdvancementManager(pl, players);
+	public static AdvancementManager getNewAdvancementManager(Player... players) {
+		return AdvancementManager.getNewAdvancementManager(plugin, players);
 	}
 	
 	/**
@@ -206,18 +205,10 @@ public class CrazyAdvancements  implements Listener {
 	/**
 	 * Changes if advancement messages should be shown by default
 	 * 
-	 * @param announceAdvancementMessages
+	 * @param announceAdvancementMessages Boolean that defines whether messages should be shown by default
 	 */
 	public static void setAnnounceAdvancementMessages(boolean announceAdvancementMessages) {
 		CrazyAdvancements.announceAdvancementMessages = announceAdvancementMessages;
-	}
-	
-	/**
-	 * 
-	 * @return <b>true</b> if Player Progress is saved by their UUID<br><b>false</b> if Player Progress is saved by their Name (not recommended)<br><b>Saving and Loading Progress via UUID will might not work as expected with this Setting!!<b>
-	 */
-	public static boolean isUseUUID() {
-		return useUUID;
 	}
 
 	private final List<String> selectors = Arrays.asList("@a", "@p", "@s", "@r");
