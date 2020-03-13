@@ -95,7 +95,7 @@ public class Advancement {
 	 * 
 	 * @param parent Parent advancement, used for drawing lines between different advancements
 	 * @param name Unique Name
-	 * @param display
+	 * @param display The display to show this advancement in.
 	 */
 	public Advancement(@Nullable Advancement parent, NameKey name, AdvancementDisplay display) {
 		this.parent = parent;
@@ -118,7 +118,7 @@ public class Advancement {
 	/**
 	 * Sets the Required Criteria Amount
 	 * 
-	 * @param criteria
+	 * @param criteria the criteria represented by an Integer
 	 */
 	public void setCriteria(int criteria) {
 		this.criteria = criteria;
@@ -167,7 +167,7 @@ public class Advancement {
 	/**
 	 * Sets the Reward for completing the Advancement
 	 * 
-	 * @param reward
+	 * @param reward the {@link AdvancementReward} to be rewarded
 	 */
 	public void setReward(@Nullable AdvancementReward reward) {
 		this.reward = reward;
@@ -199,7 +199,7 @@ public class Advancement {
 	/**
 	 * 
 	 * @param player Player who has recieved the advancement
-	 * @return
+	 * @return IChatBaseComponent
 	 */
 	public IChatBaseComponent getMessage(Player player) {
 		String translation = "chat.type.advancement." + display.getFrame().name().toLowerCase();
