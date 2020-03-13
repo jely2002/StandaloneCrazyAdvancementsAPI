@@ -36,7 +36,7 @@ public class NameKey {
 	/**
 	 * Generates a {@link NameKey}
 	 * 
-	 * @param from
+	 * @param from The MinecraftKey to instantiate this class from
 	 */
 	public NameKey(MinecraftKey from) {
 		this.namespace = from.getNamespace().toLowerCase();

@@ -4,16 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -64,8 +55,8 @@ public class AdvancementManager {
 	/**
 	 * Gets an accessible Advancement Manager by it's Name
 	 * 
-	 * @param name
-	 * @return
+	 * @param name The name of the Advancement Manager
+	 * @return AdvancementManager
 	 */
 	public static AdvancementManager getAccessibleManager(String name) {
 		name = name.toLowerCase();
@@ -115,13 +106,7 @@ public class AdvancementManager {
 	 * @return All players that have been added to the manager
 	 */
 	public ArrayList<Player> getPlayers() {
-		Iterator<Player> it = players.iterator();
-		while(it.hasNext()) {
-			Player p = it.next();
-			if(p == null || !p.isOnline()) {
-				it.remove();
-			}
-		}
+		players.removeIf(p -> p == null || !p.isOnline());
 		return players;
 	}
 	
@@ -601,7 +586,7 @@ public class AdvancementManager {
 				
 				if(!hidden || hiddenBoolean) {
 					remove.add(advancement.getName().getMinecraftKey());
-					
+
 					AdvancementRewards advRewards = new AdvancementRewards(0, new MinecraftKey[0], new MinecraftKey[0], null);
 					
 					ItemStack icon = CraftItemStack.asNMSCopy(display.getIcon());
@@ -1229,7 +1214,7 @@ public class AdvancementManager {
 	}
 	
 	private String getSavePath(Player player, String namespace) {
-		return getSaveDirectory(namespace) + (CrazyAdvancements.isUseUUID() ? player.getUniqueId() : player.getName()) + ".json";
+		return getSaveDirectory(namespace + player.getUniqueId() + ".json");
 	}
 	
 	private String getSaveDirectory(String namespace) {
@@ -1799,28 +1784,19 @@ public class AdvancementManager {
 		
 		private HashMap<String, List<String>> getProgress(UUID uuid, String namespace) {
 			File saveFile = getSaveFile(uuid, namespace);
-			
 			try {
 				FileReader os = new FileReader(saveFile);
-				
 				JsonParser parser = new JsonParser();
 				JsonElement element = parser.parse(os);
 				os.close();
-				
 				check();
-				
-				HashMap<String, List<String>> progressList = gson.fromJson(element, progressListType);
-				
-				return progressList;
+				return gson.fromJson(element, progressListType);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				return new HashMap<>();
 			}
 		}
-	
-	
-	
-	
+
 	private static Gson gson;
 	private static Type progressListType;
 	
