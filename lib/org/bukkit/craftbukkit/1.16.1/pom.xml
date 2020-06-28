@@ -5,7 +5,7 @@
     <groupId>org.bukkit</groupId>
     <artifactId>craftbukkit</artifactId>
     <packaging>jar</packaging>
-    <version>1.16.1-R0.1-SNAPSHOT</version>
+    <version>1.16.1</version>
     <name>craftbukkit</name>
     <url>http://spigotmc.org/wiki/Buildtools/</url>
     <description>The compiled craftbukkit jar as 3rd party dependency</description>
