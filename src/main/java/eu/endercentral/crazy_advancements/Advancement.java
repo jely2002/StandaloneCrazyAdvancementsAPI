@@ -3,14 +3,15 @@ package eu.endercentral.crazy_advancements;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
-import net.minecraft.server.v1_15_R1.*;
-import net.minecraft.server.v1_15_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_16_R1.*;
+import net.minecraft.server.v1_16_R1.IChatBaseComponent.ChatSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Warning;
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
@@ -132,6 +133,11 @@ public class Advancement {
 				public MinecraftKey a() {
 					return new MinecraftKey("minecraft", "impossible");
 				}
+
+				@Override
+				public JsonObject a(LootSerializationContext lootSerializationContext) {
+					return null;
+				}
 			}));
 		}
 		saveCriteria(advCriteria);
@@ -190,7 +196,7 @@ public class Advancement {
 	public void displayMessageToEverybody(Player player) {
 		IChatBaseComponent message = getMessage(player);
 		
-		PacketPlayOutChat packet = new PacketPlayOutChat(message);
+		PacketPlayOutChat packet = new PacketPlayOutChat(message, ChatMessageType.CHAT, CrazyAdvancements.CHAT_MESSAGE_UUID);
 		for(Player online : Bukkit.getOnlinePlayers()) {
 			((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
 		}
@@ -210,7 +216,7 @@ public class Advancement {
 		ChatModifier tm = title.getChatModifier();
 		AdvancementFrame frame = getDisplay().getFrame();
 		EnumChatFormat typeColor = frame == AdvancementFrame.CHALLENGE ? EnumChatFormat.DARK_PURPLE : EnumChatFormat.GREEN;
-		EnumChatFormat color = tm.getColor() == null ? typeColor : tm.getColor();
+		String color = tm.getColor() == null ? typeColor.name().toLowerCase() : tm.getColor().name;
 		
 		return ChatSerializer.a("{"
 				+ "\"translate\":\"" + translation + "\","
@@ -218,11 +224,11 @@ public class Advancement {
 				+ "["
 					+ "\"" + player.getDisplayName() + "\","
 					+ "{"
-						+ "\"text\":\"[" + title.getText() + "]\",\"color\":\"" + color.name().toLowerCase() + "\",\"bold\":" + tm.isBold() + ",\"italic\":" + tm.isItalic() + ", \"strikethrough\":" + tm.isStrikethrough() + ",\"underlined\":" + tm.isUnderlined() + ",\"obfuscated\":" + tm.isRandom() + ","
+						+ "\"text\":\"[" + title.getText() + "]\",\"color\":\"" + color + "\",\"bold\":" + tm.isBold() + ",\"italic\":" + tm.isItalic() + ", \"strikethrough\":" + tm.isStrikethrough() + ",\"underlined\":" + tm.isUnderlined() + ",\"obfuscated\":" + tm.isRandom() + ","
 						+ "\"hoverEvent\":"
 						+ "{"
 							+ "\"action\":\"show_text\","
-							+ "\"value\":[\"\", {\"text\":\"" + title.getText() + "\",\"color\":\"" + color.name().toLowerCase() + "\",\"bold\":" + tm.isBold() + ",\"italic\":" + tm.isItalic() + ", \"strikethrough\":" + tm.isStrikethrough() + ",\"underlined\":" + tm.isUnderlined() + ",\"obfuscated\":" + tm.isRandom() + "}, {\"text\":\"\\n\"}, {\"text\":\"" + description.getText()+ "\"}]"
+							+ "\"value\":[\"\", {\"text\":\"" + title.getText() + "\",\"color\":\"" + color + "\",\"bold\":" + tm.isBold() + ",\"italic\":" + tm.isItalic() + ", \"strikethrough\":" + tm.isStrikethrough() + ",\"underlined\":" + tm.isUnderlined() + ",\"obfuscated\":" + tm.isRandom() + "}, {\"text\":\"\\n\"}, {\"text\":\"" + description.getText()+ "\"}]"
 						+ "}"
 					+ "}"
 				+ "]"
@@ -259,6 +265,11 @@ public class Advancement {
 			public MinecraftKey a() {
 				return new MinecraftKey("minecraft", "impossible");
 			}
+
+			@Override
+			public JsonObject a(LootSerializationContext lootSerializationContext) {
+				return null;
+			}
 		}));
 		ArrayList<String[]> fixedRequirements = new ArrayList<>();
 		
@@ -266,8 +277,8 @@ public class Advancement {
 		
 		advRequirements = Arrays.stream(fixedRequirements.toArray()).toArray(String[][]::new);
 		
-		net.minecraft.server.v1_15_R1.AdvancementDisplay saveDisplay = new net.minecraft.server.v1_15_R1.AdvancementDisplay(icon, display.getTitle().getBaseComponent(), display.getDescription().getBaseComponent(), backgroundTexture, display.getFrame().getNMS(), true, display.isAnnouncedToChat(), true);
-		net.minecraft.server.v1_15_R1.Advancement saveAdv = new net.minecraft.server.v1_15_R1.Advancement(notName, getParent() == null ? null : getParent().getSavedAdvancement(), saveDisplay, advRewards, advCriteria, advRequirements);
+		net.minecraft.server.v1_16_R1.AdvancementDisplay saveDisplay = new net.minecraft.server.v1_16_R1.AdvancementDisplay(icon, display.getTitle().getBaseComponent(), display.getDescription().getBaseComponent(), backgroundTexture, display.getFrame().getNMS(), true, display.isAnnouncedToChat(), true);
+		net.minecraft.server.v1_16_R1.Advancement saveAdv = new net.minecraft.server.v1_16_R1.Advancement(notName, getParent() == null ? null : getParent().getSavedAdvancement(), saveDisplay, advRewards, advCriteria, advRequirements);
 		
 		
 		HashMap<MinecraftKey, AdvancementProgress> prg = new HashMap<>();
@@ -416,7 +427,7 @@ public class Advancement {
 	private Set<String> savedCriterionNames = null;
 	@SerializedName("criteriaRequirements")
 	private String[][] savedCriteriaRequirements = null;
-	private transient net.minecraft.server.v1_15_R1.Advancement savedAdvancement = null;
+	private transient net.minecraft.server.v1_16_R1.Advancement savedAdvancement = null;
 	
 	private transient HashMap<String, Boolean> savedHiddenStatus;
 	
@@ -454,11 +465,11 @@ public class Advancement {
 	}
 	
 	@Warning(reason = "Unsafe")
-	public void saveAdvancement(net.minecraft.server.v1_15_R1.Advancement save) {
+	public void saveAdvancement(net.minecraft.server.v1_16_R1.Advancement save) {
 		savedAdvancement = save;
 	}
 	
-	public net.minecraft.server.v1_15_R1.Advancement getSavedAdvancement() {
+	public net.minecraft.server.v1_16_R1.Advancement getSavedAdvancement() {
 		return savedAdvancement;
 	}
 	

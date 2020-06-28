@@ -2,11 +2,7 @@ package eu.endercentral.crazy_advancements;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,8 +10,8 @@ import org.bukkit.Warning;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_15_R1.command.ProxiedNativeCommandSender;
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R1.command.ProxiedNativeCommandSender;
+import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,10 +24,12 @@ import com.google.gson.JsonParser;
 
 import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
 import eu.endercentral.crazy_advancements.manager.AdvancementManager;
-import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
-import net.minecraft.server.v1_15_R1.PacketPlayOutSelectAdvancementTab;
+import net.minecraft.server.v1_16_R1.PacketPlayOutAdvancements;
+import net.minecraft.server.v1_16_R1.PacketPlayOutSelectAdvancementTab;
 
 public class CrazyAdvancements  implements Listener {
+
+	public static UUID CHAT_MESSAGE_UUID = new UUID(0, 0);
 	
 	private AdvancementManager fileAdvancementManager;
 	private static AdvancementPacketReceiver packetReciever;
