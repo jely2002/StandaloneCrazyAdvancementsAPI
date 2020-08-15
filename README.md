@@ -12,7 +12,7 @@ The latest version can be found on top of this page, please use this in the <ver
 <dependency>
     <groupId>com.github.jely2002</groupId>
     <artifactId>StandaloneCrazyAdvancementsAPI</artifactId>
-    <version>1.13.7</version>
+    <version>1.13.8</version>
 </dependency>
 ```
 **Add the repository to your pom.xml**
