@@ -5,14 +5,19 @@
 This is a fork of the CrazyAdvancementsAPI by ZockerAxel that has been made Maven compatible. This means that the API can now be used with Maven and as a standalone dependency that can be bundled with your plugin. This way there is no need for the server to also have the CrazyAdvancementsAPI plugin.
 
 ## Usage
-The latest version can be found on top of this page, please use this in the <version> parameter.
+The version of this API that you should use depends on the minecraft version your server/plugin is on. See the chart below.
+| Minecraft version | API/dependency version |
+| ------------- | ------------- |
+| 1.16.2  | 1.13.9  |
+| 1.16.1  | 1.13.8  |
+| 1.15.x  | 1.13.7  |
 
 **Add the dependency to your pom.xml**
 ```xml
 <dependency>
     <groupId>com.github.jely2002</groupId>
     <artifactId>StandaloneCrazyAdvancementsAPI</artifactId>
-    <version>1.13.8</version>
+    <version>1.13.9</version>
 </dependency>
 ```
 **Add the repository to your pom.xml**
