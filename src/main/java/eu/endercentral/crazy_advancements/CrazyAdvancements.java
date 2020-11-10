@@ -145,7 +145,7 @@ public class CrazyAdvancements  implements Listener {
 	 * @param player The player whose Tab should be changed
 	 * @param rootAdvancement The name of the tab to change to
 	 */
-	public static void setActiveTab(Player player, NameKey rootAdvancement) {
+	public static void setActiveTab(Player player, @Nullable NameKey rootAdvancement) {
 		setActiveTab(player, rootAdvancement, true);
 	}
 	
