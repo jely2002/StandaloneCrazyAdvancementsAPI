@@ -19,7 +19,7 @@ The version of this API that you should use depends on the minecraft version you
 <dependency>
     <groupId>com.github.jely2002</groupId>
     <artifactId>StandaloneCrazyAdvancementsAPI</artifactId>
-    <version>1.13.9</version>
+    <version>1.13.11</version>
 </dependency>
 ```
 **Add the repository to your pom.xml**
