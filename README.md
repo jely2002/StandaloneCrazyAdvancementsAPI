@@ -8,7 +8,7 @@ This is a fork of the CrazyAdvancementsAPI by ZockerAxel that has been made Mave
 The version of this API that you should use depends on the minecraft version your server/plugin is on. See the chart below.
 | Minecraft version | API/dependency version |
 | ------------- | ------------- |
-| 1.16.4  | 1.13.11  |
+| 1.16.4  | 1.13.12  |
 | 1.16.3  | 1.13.10  |
 | 1.16.2  | 1.13.9  |
 | 1.16.1  | 1.13.8  |
