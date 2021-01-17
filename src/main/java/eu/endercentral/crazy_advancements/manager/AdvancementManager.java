@@ -1235,7 +1235,7 @@ public class AdvancementManager {
 	}
 	
 	private String getSavePath(Player player, String namespace) {
-		return getSaveDirectory(namespace + player.getUniqueId() + ".json");
+		return getSaveDirectory(namespace) + player.getUniqueId() + ".json";
 	}
 	
 	private String getSaveDirectory(String namespace) {
