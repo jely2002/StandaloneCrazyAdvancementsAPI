@@ -35,15 +35,18 @@ In order to initialize/disable the 'StandaloneCrazyAdvancementsAPI' you need to 
 
 **Example `onEnable()` & `onDisable()` methods:**
 ```java
-private CrazyAdvancements advancementsAPI;
-
 @Override
 public void onEnable() {
-  this.advancementsAPI = new CrazyAdvancements(this);
+   //Initialize the API
+  private CrazyAdvancements advancementsAPI = new CrazyAdvancements(this);
+  //Get new advancementManager from the API
+  AdvancementManager advancementManager = advancementsAPI.getNewAdvancementManager();
+  //Do things with advancementManager in other classes
 }
 
 @Override
 public void onDisable() {
+  //Disable the API
   advancementsAPI.disable();
 }
 ```
