@@ -5,6 +5,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import eu.endercentral.crazy_advancements.Advancement;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+
 
 public class AdvancementGrantEvent extends Event {
 	
@@ -20,12 +22,12 @@ public class AdvancementGrantEvent extends Event {
 	}
 	
 	
-	private final AdvancementMananger manager;
+	private final AdvancementManager manager;
 	private final Advancement advancement;
 	private final Player player;
 	private boolean displayMessage;
 	
-	public AdvancementGrantEvent(AdvancementMananger manager, Advancement advancement, Player player, boolean displayMessage) {
+	public AdvancementGrantEvent(AdvancementManager manager, Advancement advancement, Player player, boolean displayMessage) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.player = player;
@@ -36,7 +38,7 @@ public class AdvancementGrantEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementMananger getManager() {
+	public AdvancementManager getManager() {
 		return manager;
 	}
 	

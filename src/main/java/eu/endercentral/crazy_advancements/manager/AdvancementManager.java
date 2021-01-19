@@ -184,7 +184,7 @@ public final class AdvancementManager {
      * @return the generated advancement manager
      * @deprecated Use the AdvancementManager constructor instead of this method
      */
-    @Deprecated(since = "1.13.10")
+    @Deprecated
     public static AdvancementManager getNewAdvancementManager(Player... players) {
         AdvancementManager manager = new AdvancementManager(players);
         return manager;
@@ -1333,7 +1333,7 @@ public final class AdvancementManager {
     }
 
     private String getSavePath(Player player, String namespace) {
-        return getSaveDirectory(namespace) + (CrazyAdvancements.isUseUUID() ? player.getUniqueId() : player.getName()) + ".json";
+        return getSaveDirectory(namespace) + player.getUniqueId() + ".json";
     }
 
     private String getSaveDirectory(String namespace) {

@@ -6,6 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import eu.endercentral.crazy_advancements.Advancement;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager;
 
 public class OfflineAdvancementRevokeEvent extends Event {
 	
@@ -21,11 +22,11 @@ public class OfflineAdvancementRevokeEvent extends Event {
 	}
 	
 	
-	private final AdvancementMananger manager;
+	private final AdvancementManager manager;
 	private final Advancement advancement;
 	private final UUID uuid;
 	
-	public OfflineAdvancementRevokeEvent(AdvancementMananger manager, Advancement advancement, UUID uuid) {
+	public OfflineAdvancementRevokeEvent(AdvancementManager manager, Advancement advancement, UUID uuid) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.uuid = uuid;
@@ -35,7 +36,7 @@ public class OfflineAdvancementRevokeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementMananger getManager() {
+	public AdvancementManager getManager() {
 		return manager;
 	}
 	
