@@ -94,7 +94,7 @@ public class AdvancementManager {
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	@Deprecated(since = "1.13.10")
+	@Deprecated
 	public static AdvancementManager getNewAdvancementManager(Player... players) {
 		AdvancementManager manager = new AdvancementManager(players);
 		for(Player player : players) {
