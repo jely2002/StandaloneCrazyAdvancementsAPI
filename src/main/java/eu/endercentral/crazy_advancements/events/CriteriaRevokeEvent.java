@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager1;
 
 public class CriteriaRevokeEvent extends Event {
 	
@@ -21,12 +21,12 @@ public class CriteriaRevokeEvent extends Event {
 	}
 	
 	
-	private final AdvancementManager manager;
+	private final AdvancementManager1 manager;
 	private final Advancement advancement;
 	private final String[] criteria;
 	private final Player player;
 	
-	public CriteriaRevokeEvent(AdvancementManager manager, Advancement advancement, String[] criteria, Player player) {
+	public CriteriaRevokeEvent(AdvancementManager1 manager, Advancement advancement, String[] criteria, Player player) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.criteria = criteria;
@@ -37,7 +37,7 @@ public class CriteriaRevokeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementManager getManager() {
+	public AdvancementManager1 getManager() {
 		return manager;
 	}
 	

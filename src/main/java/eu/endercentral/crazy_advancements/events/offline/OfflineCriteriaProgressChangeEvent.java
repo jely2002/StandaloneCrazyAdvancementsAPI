@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager1;
 
 public class OfflineCriteriaProgressChangeEvent extends Event {
 	
@@ -22,13 +22,13 @@ public class OfflineCriteriaProgressChangeEvent extends Event {
 	}
 	
 	
-	private final AdvancementManager manager;
+	private final AdvancementManager1 manager;
 	private final Advancement advancement;
 	private final UUID uuid;
 	private final int progressBefore;
 	private int progress;
 	
-	public OfflineCriteriaProgressChangeEvent(AdvancementManager manager, Advancement advancement, UUID uuid, int progressBefore, int progress) {
+	public OfflineCriteriaProgressChangeEvent(AdvancementManager1 manager, Advancement advancement, UUID uuid, int progressBefore, int progress) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.uuid = uuid;;
@@ -40,7 +40,7 @@ public class OfflineCriteriaProgressChangeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementManager getManager() {
+	public AdvancementManager1 getManager() {
 		return manager;
 	}
 	

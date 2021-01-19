@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Warning;
 import javax.annotation.Nullable;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
+
 import org.bukkit.craftbukkit.v1_16_R3.command.ProxiedNativeCommandSender;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -23,8 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazy_advancements.manager.AdvancementManager1;
 import net.minecraft.server.v1_16_R3.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_16_R3.PacketPlayOutSelectAdvancementTab;
 
@@ -32,12 +29,12 @@ public class CrazyAdvancements  implements Listener {
 
 	public static UUID CHAT_MESSAGE_UUID = new UUID(0, 0);
 	
-	private AdvancementManager fileAdvancementManager;
+	private AdvancementManager1 fileAdvancementManager;
 	private static AdvancementPacketReceiver packetReciever;
 
 	public static JavaPlugin plugin;
 	private static ArrayList<Player> initiatedPlayers = new ArrayList<>();
-	private static ArrayList<AdvancementManager> managers = new ArrayList<>();
+	private static ArrayList<AdvancementManager1> managers = new ArrayList<>();
 	private static boolean announceAdvancementMessages = true;
 	private static HashMap<String, NameKey> openedTabs = new HashMap<>();
 
@@ -48,7 +45,7 @@ public class CrazyAdvancements  implements Listener {
 	 */
 	public CrazyAdvancements(JavaPlugin pl) {
 		plugin = pl;
-		fileAdvancementManager = new AdvancementManager();
+		fileAdvancementManager = new AdvancementManager1();
 
 		packetReciever = new AdvancementPacketReceiver();
 
@@ -72,7 +69,7 @@ public class CrazyAdvancements  implements Listener {
 	 * Disables the API
 	 */
 	public void disable() {
-		for(AdvancementManager manager : managers) {
+		for(AdvancementManager1 manager : managers) {
 			for(Advancement advancement : manager.getAdvancements()) {
 				manager.removeAdvancement(advancement);
 			}
@@ -115,8 +112,8 @@ public class CrazyAdvancements  implements Listener {
 	 * @return the generated advancement manager
 	 */
 	@Deprecated
-	public static AdvancementManager getNewAdvancementManager(Player... players) {
-		return AdvancementManager.getNewAdvancementManager(players);
+	public static AdvancementManager1 getNewAdvancementManager(Player... players) {
+		return AdvancementManager1.getNewAdvancementManager(players);
 	}
 	
 	/**
