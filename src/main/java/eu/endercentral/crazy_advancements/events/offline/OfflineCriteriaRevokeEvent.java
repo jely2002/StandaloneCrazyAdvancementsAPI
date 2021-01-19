@@ -6,7 +6,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager1;
 
 public class OfflineCriteriaRevokeEvent extends Event {
 	
@@ -22,12 +21,12 @@ public class OfflineCriteriaRevokeEvent extends Event {
 	}
 	
 	
-	private final AdvancementManager1 manager;
+	private final AdvancementMananger manager;
 	private final Advancement advancement;
 	private final String[] criteria;
 	private final UUID uuid;
 	
-	public OfflineCriteriaRevokeEvent(AdvancementManager1 manager, Advancement advancement, String[] criteria, UUID uuid) {
+	public OfflineCriteriaRevokeEvent(AdvancementMananger manager, Advancement advancement, String[] criteria, UUID uuid) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.criteria = criteria;
@@ -38,7 +37,7 @@ public class OfflineCriteriaRevokeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementManager1 getManager() {
+	public AdvancementMananger getManager() {
 		return manager;
 	}
 	

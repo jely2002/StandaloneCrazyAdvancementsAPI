@@ -21,7 +21,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import eu.endercentral.crazy_advancements.manager.AdvancementManager1;
 import net.minecraft.server.v1_16_R3.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_16_R3.PacketPlayOutSelectAdvancementTab;
 
@@ -29,12 +28,12 @@ public class CrazyAdvancements  implements Listener {
 
 	public static UUID CHAT_MESSAGE_UUID = new UUID(0, 0);
 	
-	private AdvancementManager1 fileAdvancementManager;
+	private AdvancementMananger fileAdvancementManager;
 	private static AdvancementPacketReceiver packetReciever;
 
 	public static JavaPlugin plugin;
 	private static ArrayList<Player> initiatedPlayers = new ArrayList<>();
-	private static ArrayList<AdvancementManager1> managers = new ArrayList<>();
+	private static ArrayList<AdvancementMananger> managers = new ArrayList<>();
 	private static boolean announceAdvancementMessages = true;
 	private static HashMap<String, NameKey> openedTabs = new HashMap<>();
 
@@ -45,7 +44,7 @@ public class CrazyAdvancements  implements Listener {
 	 */
 	public CrazyAdvancements(JavaPlugin pl) {
 		plugin = pl;
-		fileAdvancementManager = new AdvancementManager1();
+		fileAdvancementManager = new AdvancementMananger();
 
 		packetReciever = new AdvancementPacketReceiver();
 
@@ -69,7 +68,7 @@ public class CrazyAdvancements  implements Listener {
 	 * Disables the API
 	 */
 	public void disable() {
-		for(AdvancementManager1 manager : managers) {
+		for(AdvancementMananger manager : managers) {
 			for(Advancement advancement : manager.getAdvancements()) {
 				manager.removeAdvancement(advancement);
 			}
@@ -112,8 +111,8 @@ public class CrazyAdvancements  implements Listener {
 	 * @return the generated advancement manager
 	 */
 	@Deprecated
-	public static AdvancementManager1 getNewAdvancementManager(Player... players) {
-		return AdvancementManager1.getNewAdvancementManager(players);
+	public static AdvancementMananger getNewAdvancementManager(Player... players) {
+		return AdvancementMananger.getNewAdvancementManager(players);
 	}
 	
 	/**

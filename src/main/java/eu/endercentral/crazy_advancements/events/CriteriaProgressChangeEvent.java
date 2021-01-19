@@ -5,7 +5,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager1;
 
 public class CriteriaProgressChangeEvent extends Event {
 	
@@ -21,13 +20,13 @@ public class CriteriaProgressChangeEvent extends Event {
 	}
 	
 	
-	private final AdvancementManager1 manager;
+	private final AdvancementMananger manager;
 	private final Advancement advancement;
 	private final Player player;
 	private final int progressBefore;
 	private int progress;
 	
-	public CriteriaProgressChangeEvent(AdvancementManager1 manager, Advancement advancement, Player player, int progressBefore, int progress) {
+	public CriteriaProgressChangeEvent(AdvancementMananger manager, Advancement advancement, Player player, int progressBefore, int progress) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.player = player;
@@ -39,7 +38,7 @@ public class CriteriaProgressChangeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementManager1 getManager() {
+	public AdvancementMananger getManager() {
 		return manager;
 	}
 	
