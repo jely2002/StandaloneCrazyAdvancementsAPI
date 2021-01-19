@@ -8,7 +8,7 @@ This is a fork of the CrazyAdvancementsAPI by ZockerAxel that has been made Mave
 The version of this API that you should use depends on the minecraft version your server/plugin is on. See the chart below.
 | Minecraft version | API/dependency version |
 | ------------- | ------------- |
-| 1.16.4  | 1.13.12  |
+| 1.16.4  | 1.13.13  |
 | 1.16.3  | 1.13.10  |
 | 1.16.2  | 1.13.9  |
 | 1.16.1  | 1.13.8  |
@@ -37,11 +37,11 @@ In order to initialize/disable the 'StandaloneCrazyAdvancementsAPI' you need to 
 ```java
 @Override
 public void onEnable() {
-   //Initialize the API
-  private CrazyAdvancements advancementsAPI = new CrazyAdvancements(this);
-  //Get new advancementManager from the API
-  AdvancementManager advancementManager = advancementsAPI.getNewAdvancementManager();
-  //Do things with advancementManager in other classes
+   //Initializes the API. Requires the JavaPlugin the API gets used from.
+  CrazyAdvancements advancementsAPI = new CrazyAdvancements(this);
+  
+  //Create a new advancementManager as per the original documentation
+  AdvancementManager advancementManager = new AdvancementManager(Player... players)
 }
 
 @Override
