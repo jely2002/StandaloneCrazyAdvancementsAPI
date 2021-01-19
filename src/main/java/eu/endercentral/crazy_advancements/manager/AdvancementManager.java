@@ -66,14 +66,25 @@ public class AdvancementManager {
 		return smallestX.containsKey(key) ? smallestX.get(key) : 0;
 	}
 
-	private static JavaPlugin plugin;
+	private JavaPlugin plugin;
 	
 	private boolean announceAdvancementMessages = true;
 	private ArrayList<Player> players;
 	private ArrayList<Advancement> advancements = new ArrayList<>();
-	
-	private AdvancementManager() {
-		players = new ArrayList<>();
+
+	/**
+	 * Creates a new instance of advancement manager
+	 *
+	 * @param pl Pass the plugin instance of the plugin running this API
+	 * @param players All players that should be in the new manager from the start, can be changed at any time
+	 * @return the generated advancement manager
+	 */
+	public AdvancementManager(Player... players) {
+		this.plugin = CrazyAdvancements.plugin;
+		this.players = new ArrayList<>();
+		for(Player player : players) {
+			this.addPlayer(player);
+		}
 	}
 	
 	/**
@@ -83,9 +94,9 @@ public class AdvancementManager {
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	public static AdvancementManager getNewAdvancementManager(JavaPlugin pl, Player... players) {
-		plugin = pl;
-		AdvancementManager manager = new AdvancementManager();
+	@Deprecated(since = "1.13.10")
+	public static AdvancementManager getNewAdvancementManager(Player... players) {
+		AdvancementManager manager = new AdvancementManager(players);
 		for(Player player : players) {
 			manager.addPlayer(player);
 		}
@@ -410,13 +421,7 @@ public class AdvancementManager {
 			NameKey rootAdvancement = CrazyAdvancements.getActiveTab(player);
 			CrazyAdvancements.clearActiveTab(player);
 			addPlayer(player);
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				
-				@Override
-				public void run() {
-					CrazyAdvancements.setActiveTab(player, rootAdvancement);
-				}
-			}, 5);
+			Bukkit.getScheduler().runTaskLater(plugin, () -> CrazyAdvancements.setActiveTab(player, rootAdvancement), 5);
 		}
 	}
 	
@@ -431,13 +436,7 @@ public class AdvancementManager {
 			NameKey rootAdvancement = CrazyAdvancements.getActiveTab(player);
 			CrazyAdvancements.clearActiveTab(player);
 			addPlayer(player, tab);
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				
-				@Override
-				public void run() {
-					CrazyAdvancements.setActiveTab(player, rootAdvancement);
-				}
-			}, 5);
+			Bukkit.getScheduler().runTaskLater(plugin, () -> CrazyAdvancements.setActiveTab(player, rootAdvancement), 5);
 		}
 	}
 	
@@ -791,17 +790,7 @@ public class AdvancementManager {
 		}
 		return null;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	protected void checkAwarded(Player player, Advancement advancement) {
 		Map<String, Criterion> advCriteria = new HashMap<>();
 		String[][] advRequirements = new String[][] {};

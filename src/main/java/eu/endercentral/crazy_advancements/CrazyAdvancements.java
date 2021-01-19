@@ -35,7 +35,7 @@ public class CrazyAdvancements  implements Listener {
 	private AdvancementManager fileAdvancementManager;
 	private static AdvancementPacketReceiver packetReciever;
 
-	private static JavaPlugin plugin;
+	public static JavaPlugin plugin;
 	private static ArrayList<Player> initiatedPlayers = new ArrayList<>();
 	private static ArrayList<AdvancementManager> managers = new ArrayList<>();
 	private static boolean announceAdvancementMessages = true;
@@ -48,23 +48,20 @@ public class CrazyAdvancements  implements Listener {
 	 */
 	public CrazyAdvancements(JavaPlugin pl) {
 		plugin = pl;
-		fileAdvancementManager = AdvancementManager.getNewAdvancementManager(plugin);
+		fileAdvancementManager = new AdvancementManager();
 
 		packetReciever = new AdvancementPacketReceiver();
 
 		//Registering Players
-		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-			@Override
-			public void run() {
-				String path = plugin.getDataFolder().getAbsolutePath() + File.separator + "advancements" + File.separator + "main" + File.separator;
-				File saveLocation = new File(path);
-				loadAdvancements(saveLocation);
+		Bukkit.getScheduler().runTaskLater(plugin, () -> {
+			String path = plugin.getDataFolder().getAbsolutePath() + File.separator + "advancements" + File.separator + "main" + File.separator;
+			File saveLocation = new File(path);
+			loadAdvancements(saveLocation);
 
-				for(Player player : Bukkit.getOnlinePlayers()) {
-					fileAdvancementManager.addPlayer(player);
-					packetReciever.initPlayer(player);
-					initiatedPlayers.add(player);
-				}
+			for(Player player : Bukkit.getOnlinePlayers()) {
+				fileAdvancementManager.addPlayer(player);
+				packetReciever.initPlayer(player);
+				initiatedPlayers.add(player);
 			}
 		}, 5);
 		//Registering Events
@@ -117,8 +114,9 @@ public class CrazyAdvancements  implements Listener {
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
+	@Deprecated(since = "1.13.10")
 	public static AdvancementManager getNewAdvancementManager(Player... players) {
-		return AdvancementManager.getNewAdvancementManager(plugin, players);
+		return AdvancementManager.getNewAdvancementManager(players);
 	}
 	
 	/**
